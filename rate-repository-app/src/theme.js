@@ -8,6 +8,7 @@ const theme = {
     appBarTextColor: "#FAF9F6",
     repositoryCardBackgroundColor: "#FFFFFF",
     languageTextColor: "#318CE7",
+    placeholderTextColor: "#A9A9A9"
   },
   fontSizes: {
     body: 14,
