@@ -8,14 +8,16 @@ const theme = {
     appBarTextColor: "#FAF9F6",
     repositoryCardBackgroundColor: "#FFFFFF",
     languageTextColor: "#318CE7",
-    placeholderTextColor: "#A9A9A9"
+    placeholderTextColor: "#A9A9A9",
   },
   fontSizes: {
     body: 14,
     subheading: 16,
   },
   fonts: {
-    main: "System",
+    android: "Roboto",
+    ios: "Arial",
+    default: "System",
   },
   fontWeights: {
     normal: "400",
