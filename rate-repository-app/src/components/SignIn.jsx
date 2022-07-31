@@ -45,11 +45,13 @@ const SignInForm = ({ onSubmit }) => {
       <FormikTextInput
         name="username"
         placeholder="Username"
+        placeholderTextColor={theme.colors.placeholderTextColor}
         style={styles.formField}
       />
       <FormikTextInput
         name="password"
         placeholder="Password"
+        placeholderTextColor={theme.colors.placeholderTextColor}
         secureTextEntry={true}
         style={styles.formField}
       />
