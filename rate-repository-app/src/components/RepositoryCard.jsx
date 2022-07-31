@@ -15,7 +15,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   upperLeft: {
-    paddingRight: 10,
+    paddingLeft: 5,
+    paddingRight: 15,
+    paddingTop: 5,
   },
   upperRight: {
     paddingRight: 10,
