@@ -9,13 +9,15 @@ const useRepositories = () => {
   const results = useQuery(GET_QUERY);
 
   const fetchRepositories = async () => {
-    setLoading(results.loading);
-    setRepositories(results.data.repositories);
+    if (results.data) {
+      setLoading(results.loading);
+      setRepositories(results.data.repositories);
+    }
   };
 
   useEffect(() => {
     fetchRepositories();
-  }, [loading, repositories]);
+  }, [loading]);
 
   return { repositories, loading, refetch: fetchRepositories };
 };

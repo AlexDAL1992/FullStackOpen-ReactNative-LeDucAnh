@@ -14,3 +14,11 @@ export const GET_QUERY = gql`
   }
   ${REPO_DETAILS}
 `;
+
+export const GET_USER = gql`
+  query {
+    me {
+      username
+    }
+  }
+`;
