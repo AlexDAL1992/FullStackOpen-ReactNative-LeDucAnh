@@ -80,7 +80,7 @@ const SignInForm = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [signIn] = useSignIn();
 
   const onSubmit = async (values) => {

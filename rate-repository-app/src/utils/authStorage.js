@@ -7,8 +7,7 @@ export default class AuthStorage {
 
   async getAccessToken() {
     // Get the access token for the storage
-    const token = await AsyncStorage.getItem(`${this.namespace}:token`);
-    return token ? token : null;
+    return await AsyncStorage.getItem(`${this.namespace}:token`);
   }
 
   async setAccessToken(accessToken) {

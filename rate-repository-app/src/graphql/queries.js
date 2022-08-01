@@ -18,6 +18,7 @@ export const GET_QUERY = gql`
 export const GET_USER = gql`
   query {
     me {
+      id
       username
     }
   }
