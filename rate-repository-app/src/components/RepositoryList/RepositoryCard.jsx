@@ -1,7 +1,7 @@
 import { View, Image, StyleSheet, Pressable } from "react-native";
 
-import Text from "./Text";
-import theme from "../theme";
+import Text from "../Text";
+import theme from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 
 const RepositoryCard = ({ repository }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="repositoryItem">
       <View style={styles.upper}>
         <View style={styles.upperLeft}>
           <Image
