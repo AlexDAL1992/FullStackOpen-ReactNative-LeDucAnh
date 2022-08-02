@@ -56,9 +56,14 @@ const AppBar = () => {
           <Text style={styles.text}>Repositories</Text>
         </Link>
         {user ? (
-          <Pressable to="/" style={styles.scrollItems} onPress={signOut}>
-            <Text style={styles.text}>Sign out</Text>
-          </Pressable>
+          <>
+            <Link to="/create-review" style={styles.scrollItems}>
+              <Text style={styles.text}>Craete a review</Text>
+            </Link>
+            <Pressable to="/" style={styles.scrollItems} onPress={signOut}>
+              <Text style={styles.text}>Sign out</Text>
+            </Pressable>
+          </>
         ) : (
           <Link to="/signin" style={styles.scrollItems}>
             <Text style={styles.text}>Sign in</Text>

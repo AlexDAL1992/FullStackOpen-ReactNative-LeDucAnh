@@ -1,5 +1,5 @@
 import { View, StyleSheet } from "react-native";
-//import { format } from "date-fns";
+import { format } from "date-fns";
 
 import Text from "./Text";
 import theme from "../theme";
@@ -59,7 +59,7 @@ const ReviewCard = ({ review }) => {
       <View style={styles.right}>
         <Text style={styles.username}>{review.user.username}</Text>
         <Text style={styles.date}>
-          
+          {format(new Date(review.createdAt), "dd/MM/yyyy HH.mm")}
         </Text>
         <Text>{review.text}</Text>
       </View>
