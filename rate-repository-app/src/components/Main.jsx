@@ -5,6 +5,7 @@ import AppBar from "./AppBar";
 import RepositoryList from "./RepositoryList";
 import RepositoryItem from "./RepositoryList/RepositoryItem";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 import ReviewForm from "./ReviewForm";
 import theme from "../theme";
 
@@ -24,6 +25,7 @@ const Main = () => {
         <Route path="/" element={<RepositoryList />} exact />
         <Route path="*" element={<Navigate to="/" replace />} />
         <Route path="/signin" element={<SignIn />} exact />
+        <Route path="/signup" element={<SignUp />} exact />
         <Route path="repositories/:id" element={<RepositoryItem />} exact />
         <Route path="create-review" element={<ReviewForm />} exact />
       </Routes>

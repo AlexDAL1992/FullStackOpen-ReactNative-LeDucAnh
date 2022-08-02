@@ -37,7 +37,6 @@ const AppBar = () => {
 
   const { data } = useQuery(GET_USER);
   const user = data?.me;
-  console.log(user);
 
   const signOut = async () => {
     await authStorage.removeAccessToken();
@@ -58,16 +57,21 @@ const AppBar = () => {
         {user ? (
           <>
             <Link to="/create-review" style={styles.scrollItems}>
-              <Text style={styles.text}>Craete a review</Text>
+              <Text style={styles.text}>Create a review</Text>
             </Link>
             <Pressable to="/" style={styles.scrollItems} onPress={signOut}>
               <Text style={styles.text}>Sign out</Text>
             </Pressable>
           </>
         ) : (
-          <Link to="/signin" style={styles.scrollItems}>
-            <Text style={styles.text}>Sign in</Text>
-          </Link>
+          <>
+            <Link to="/signin" style={styles.scrollItems}>
+              <Text style={styles.text}>Sign in</Text>
+            </Link>
+            <Link to="/signup" style={styles.scrollItems}>
+              <Text style={styles.text}>Sign up</Text>
+            </Link>
+          </>
         )}
       </ScrollView>
     </View>

@@ -6,14 +6,14 @@ import * as yup from "yup";
 
 import Text from "./Text";
 import FormikTextInput from "./FormikTextInput";
+import { SIGNUP } from "../graphql/mutations";
+import useSignIn from "../hooks/useSignIn";
 import theme from "../theme";
-import { CREATE_REVIEW } from "../graphql/mutations";
 
 const initialValues = {
-  repositoryName: "",
-  ownerName: "",
-  rating: "",
-  text: "",
+  username: "",
+  password: "",
+  doesMatch: "",
 };
 
 const styles = StyleSheet.create({
@@ -46,76 +46,70 @@ const styles = StyleSheet.create({
 });
 
 const validationSchema = yup.object().shape({
-  repositoryName: yup
+  username: yup
     .string()
-    .min(3, "Repository name must be at least 3 characters!")
-    .required("Repository name is required!"),
-  ownerName: yup
+    .min(3, "Username must be at least 3 characters!")
+    .required("Username is required!"),
+  password: yup
     .string()
-    .min(3, "Repository owner username must be at least 3 characters!")
-    .required("Repository owner username is required!"),
-  rating: yup
-    .number("Rating must be a number!")
-    .min(0, "Rating must be from 0 to 100!")
-    .max(100, "Rating must be from 0 to 100!")
-    .required("Rating is required!"),
-  text: yup.string(),
+    .min(3, "Password must be at least 3 characters!")
+    .required("Password is required!"),
+  doesMatch: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Password confirmation must match!")
+    .required("Password confirmation is required!"),
 });
 
-const CreateReviewForm = ({ onSubmit }) => {
+const SignUpForm = ({ onSubmit }) => {
   return (
     <View style={styles.formView}>
       <FormikTextInput
-        name="ownerName"
-        placeholder="Repository owner name"
+        name="username"
+        placeholder="Username"
         placeholderTextColor={theme.colors.placeholderTextColor}
         style={styles.formField}
       ></FormikTextInput>
       <FormikTextInput
-        name="repositoryName"
-        placeholder="Repository name"
+        name="password"
+        placeholder="Password"
         placeholderTextColor={theme.colors.placeholderTextColor}
+        secureTextEntry={true}
         style={styles.formField}
       ></FormikTextInput>
       <FormikTextInput
-        name="rating"
-        placeholder="Rating between 0 and 100"
+        name="doesMatch"
+        placeholder="Confirm password"
         placeholderTextColor={theme.colors.placeholderTextColor}
+        secureTextEntry={true}
         style={styles.formField}
-      ></FormikTextInput>
-      <FormikTextInput
-        name="text"
-        placeholder="Review"
-        placeholderTextColor={theme.colors.placeholderTextColor}
-        style={styles.formField}
-        multiline
       ></FormikTextInput>
       <Pressable
         onPress={onSubmit}
         style={[styles.formField, styles.formButton]}
       >
-        <Text style={{ color: "white" }}>Create a review</Text>
+        <Text style={{ color: "white" }}>Create new user</Text>
       </Pressable>
     </View>
   );
 };
 
-const ReviewForm = () => {
+const SignUp = () => {
   const navigate = useNavigate();
-  const [createReview] = useMutation(CREATE_REVIEW);
+  const [signup] = useMutation(SIGNUP);
+  const [signIn] = useSignIn();
 
   const onSubmit = async (values) => {
-    const newReview = {
-      ...values,
-      rating: parseInt(values.rating),
+    const newUser = {
+      username: values.username,
+      password: values.password,
     };
 
-    const results = await createReview({
-      variables: { review: newReview },
-    });
-
-    if (results.data?.createReview) {
-      navigate(`/repositories/${results.data.createReview.repositoryId}`);
+    try {
+      await signup({ variables: { user: newUser } });
+      await signIn(newUser);
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -125,9 +119,9 @@ const ReviewForm = () => {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {({ handleSubmit }) => <CreateReviewForm onSubmit={handleSubmit} />}
+      {({ handleSubmit }) => <SignUpForm onSubmit={handleSubmit} />}
     </Formik>
   );
 };
 
-export default ReviewForm;
+export default SignUp;
