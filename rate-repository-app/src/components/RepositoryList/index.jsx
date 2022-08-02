@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { FlatList, View, StyleSheet, Pressable } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { useNavigate } from "react-router-native";
 
 import RepositoryCard from "./RepositoryCard";
@@ -10,9 +12,40 @@ const styles = StyleSheet.create({
   },
 });
 
+const orderOptions = [
+  { label: "Most rated repositories", value: "mostRatings" },
+  { label: "Least rated repositories", value: "leastRatings" },
+  { label: "Latest repositories", value: "latest" },
+  { label: "Oldest repositories", value: "oldest" },
+];
+
+const orderValues = {
+  mostRatings: {
+    orderBy: "RATING_AVERAGE",
+    orderDirection: "DESC",
+  },
+  leastRatings: { orderBy: "RATING_AVERAGE", orderDirection: "ASC" },
+  latest: { orderBy: "CREATED_AT", orderDirection: "DESC" },
+  oldest: { orderBy: "CREATED_AT", orderDirection: "ASC" },
+};
+
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories }) => {
+const RepositoryListMenu = ({ orderBy, onOrderBy }) => {
+  return (
+    <Picker onValueChange={onOrderBy} selectedValue={orderBy}>
+      {orderOptions.map(({ value, label }) => (
+        <Picker.Item key={value} label={label} value={value} />
+      ))}
+    </Picker>
+  );
+};
+
+export const RepositoryListContainer = ({
+  orderBy,
+  onOrderBy,
+  repositories,
+}) => {
   const navigate = useNavigate();
 
   const onOpenRepo = (id) => {
@@ -28,6 +61,9 @@ export const RepositoryListContainer = ({ repositories }) => {
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       keyExtractor={(item, index) => index.toString()}
+      ListHeaderComponent={
+        <RepositoryListMenu orderBy={orderBy} onOrderBy={onOrderBy} />
+      }
       renderItem={({ item }) => (
         <Pressable onPress={() => onOpenRepo(item.id)}>
           <RepositoryCard repository={item} />
@@ -38,9 +74,18 @@ export const RepositoryListContainer = ({ repositories }) => {
 };
 
 const RepositoryList = () => {
-  const { repositories } = useRepositories();
+  const [orderBy, setOrderBy] = useState("latest");
+  const { repositories } = useRepositories({
+    ...orderValues[orderBy],
+  });
 
-  return <RepositoryListContainer repositories={repositories} />;
+  return (
+    <RepositoryListContainer
+      orderBy={orderBy}
+      onOrderBy={(orderBy) => setOrderBy(orderBy)}
+      repositories={repositories}
+    />
+  );
 };
 
 export default RepositoryList;
