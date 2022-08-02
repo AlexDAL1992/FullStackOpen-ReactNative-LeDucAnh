@@ -6,7 +6,6 @@ import RepositoryCard from "./RepositoryCard";
 import Text from "../Text";
 import theme from "../../theme";
 import useRepository from "../../hooks/useRepository";
-import useReview from "../../hooks/useReview";
 import ReviewCard from "../ReviewCard";
 
 const styles = StyleSheet.create({
@@ -52,14 +51,19 @@ const Repository = ({ repository, onOpenGithub }) => {
 
 const RepositoryItem = () => {
   const { id } = useParams();
-  const { repository } = useRepository(id);
-  const { reviews } = useReview(id);
+  const { repository, fetchMore } = useRepository({ id, first: 3 });
 
   const repo = repository ? repository : {};
-  const rev = reviews ? reviews.map(({ node }) => node) : [];
+  const rev = repository
+    ? repository.reviews.edges.map(({ node }) => node)
+    : [];
 
   const onOpenGithub = () => {
     Linking.openURL(repo.url);
+  };
+
+  const onEndReach = () => {
+    fetchMore();
   };
 
   return (
@@ -71,6 +75,8 @@ const RepositoryItem = () => {
         <Repository repository={repo} onOpenGithub={onOpenGithub} />
       )}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };

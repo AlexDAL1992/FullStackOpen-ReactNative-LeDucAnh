@@ -13,7 +13,7 @@ export const LOGIN = gql`
 export const SIGNUP = gql`
   mutation signup($user: CreateUserInput!) {
     createUser(user: $user) {
-      ...UserDetails
+      ...userDetails
     }
   }
   ${USER_DETAILS}
@@ -22,9 +22,9 @@ export const SIGNUP = gql`
 export const CREATE_REVIEW = gql`
   mutation createReview($review: CreateReviewInput!) {
     createReview(review: $review) {
-      ...ReviewDetails
+      ...reviewDetails
       repository {
-        ...RepoDetails
+        ...repoDetails
       }
     }
   }

@@ -58,6 +58,7 @@ export const RepositoryListContainer = ({
   search,
   onSearch,
   repositories,
+  onEndReach,
 }) => {
   const navigate = useNavigate();
 
@@ -87,6 +88,8 @@ export const RepositoryListContainer = ({
           <RepositoryCard repository={item} />
         </Pressable>
       )}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };
@@ -96,10 +99,15 @@ const RepositoryList = () => {
   const [search, setSearch] = useState("");
   const [debounced] = useDebounce(search, 500);
 
-  const { repositories } = useRepositories({
+  const { repositories, fetchMore } = useRepositories({
+    first: 5,
     ...orderValues[orderBy],
     searchKeyword: debounced,
   });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
@@ -108,6 +116,7 @@ const RepositoryList = () => {
       search={search}
       onSearch={(search) => setSearch(search)}
       repositories={repositories}
+      onEndReach={onEndReach}
     />
   );
 };
